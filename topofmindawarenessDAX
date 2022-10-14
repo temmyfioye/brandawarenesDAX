@@ -1,0 +1,243 @@
+BrandAwarenessSummary = 
+
+VAR highesttopofmindawarenesstbl = 
+    SUMMARIZE('product Data','product Data'[Brand],
+    "Highesttopofmindawareness", CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Brand Awareness]="Top of Mind awareness"))
+    )
+
+VAR highesttopofmindawarenessval = MAXX(
+    SUMMARIZE('product Data','product Data'[Brand],
+    "Highesttopofmindawareness",CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Brand Awareness]="Top of Mind awareness"))
+    ),
+[Highesttopofmindawareness]
+
+
+//VAR highesttopofmindawarenesstblbrand = 
+
+ VAR hightopofmindawareness = CALCULATE(MAXX(FILTER(highesttopofmindawarenesstbl, [Highesttopofmindawareness] = highesttopofmindawarenessval), 'product Data'[Brand]))
+// VAR hightopofmindawarenessvalue = CALCULATE(MAXX(FILTER(highesttopofmindawarenesstbl, [Highesttopofmindawareness] = highesttopofmindawarenessval), 'product Data'[b]))
+ RETURN
+ "For "&SELECTEDVALUE('product Data'[Date].[Year]," the selected Year(s)")&", "
+        &SELECTEDVALUE('product Data'[Date].[Quarter]," selected Quarter(s)")&", "
+        &SELECTEDVALUE('product Data'[Actual_Age (groups)]," selected Age band(s)")&", "
+        &SELECTEDVALUE('product Data'[Sector]," selected Residential area(s)")&", "
+        &SELECTEDVALUE('product Data'[State]," and selected State(s)")&
+        ", the brand with the highest Top of Mind Awareness (topofmindawareness) is " &hightopofmindawareness & " with a top of mind awareness value of "& highesttopofmindawarenessval
+
+------------------
+topofmindawarenessChangeCol = 
+VAR TotalQ4 = CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Date].[QuarterNo] = 4))
+VAR TotalQ3 =CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Date].[QuarterNo] = 3))
+VAR difference = TotalQ3 - TotalQ4
+ 
+RETURN
+ difference 
+------------------
+brandtopofmindawarenesschange = 
+VAR highesttopofmindawarenesstblb = 
+    SUMMARIZE('product Data','product Data'[Brand],
+    "Highesttopofmindawarenessb", 'product Data'[topofmindawarenessChange]
+    )
+
+VAR highesttopofmindawarenessvalb = MAXX(
+    SUMMARIZE('product Data','product Data'[Brand],
+    "Highesttopofmindawarenessb",'product Data'[topofmindawarenessChange]
+    ),
+[Highesttopofmindawarenessb]
+)
+
+VAR lowesttopofmindawarenesstblb = 
+    SUMMARIZE('product Data','product Data'[Brand],
+    "lowesttopofmindawarenessb", 'product Data'[topofmindawarenessChange]
+    )
+
+VAR lowesttopofmindawarenessvalb = MINX(
+    SUMMARIZE('product Data','product Data'[Brand],
+    "lowesttopofmindawarenessb",'product Data'[topofmindawarenessChange]
+    ),
+[lowesttopofmindawarenessb]
+)
+
+
+ VAR hightopofmindawarenessb = CALCULATE(MAXX(FILTER(highesttopofmindawarenesstblb, [Highesttopofmindawarenessb] = highesttopofmindawarenessvalb), 'product Data'[Brand]))
+ VAR lowtopofmindawarenessb = CALCULATE(MINX(FILTER(lowesttopofmindawarenesstblb, [lowesttopofmindawarenessb] = lowesttopofmindawarenessvalb), 'product Data'[Brand]))
+
+ RETURN
+ "The brand with the highest Top of Mind Awareness (topofmindawareness) change is " &hightopofmindawarenessb & " with a change of "& highesttopofmindawarenessvalb&" while the brand with the lowest top of minds awareness change is "&lowtopofmindawarenessb&" with a change of "&lowesttopofmindawarenessvalb&"."
+----------
+BrandUserSummary = 
+
+VAR highesttopofmindawarenesstblU = 
+    SUMMARIZE('product Data','product Data'[Brand],
+    "HighesttopofmindawarenessU", CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[User Type]="Intenders"))
+    )
+
+VAR highesttopofmindawarenessvalU = MAXX(
+    SUMMARIZE('product Data','product Data'[Brand],
+    "HighesttopofmindawarenessU",CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[User Type]="Intenders"))
+    ),
+[HighesttopofmindawarenessU]
+)
+
+
+
+)
+
+
+//VAR highesttopofmindawarenesstblbrand = 
+
+ VAR hightopofmindawarenessUser = CALCULATE(MAXX(FILTER(highesttopofmindawarenesstblU, [HighesttopofmindawarenessU] = highesttopofmindawarenessvalU), 'product Data'[Brand]))
+// VAR hightopofmindawarenessvalue = CALCULATE(MAXX(FILTER(highesttopofmindawarenesstbl, [Highesttopofmindawareness] = highesttopofmindawarenessval), 'product Data'[b]))
+ RETURN
+ "For "&SELECTEDVALUE('product Data'[Date].[Year]," the selected Year(s)")&", "
+        &SELECTEDVALUE('product Data'[Date].[Quarter]," selected Quarter(s)")&", "
+        &SELECTEDVALUE('product Data'[Actual_Age (groups)]," selected Age band(s)")&", "
+        &SELECTEDVALUE('product Data'[Sector]," selected Residential area(s)")&", "
+        &SELECTEDVALUE('product Data'[State]," and selected State(s)")&
+        ", the brand with the highest Intended Users is " &hightopofmindawarenessUser & " with a value of "& highesttopofmindawarenessvalU
+
+--------------------
+
+BrandITP = 
+
+VAR highestITPtbl = 
+    SUMMARIZE('product Data','product Data'[Brand],
+    "HighestITP", CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Intention to Purchase]="Total Intended"))
+    )
+
+VAR highestITPVal = MAXX(
+    SUMMARIZE('product Data','product Data'[Brand],
+    "HighestITP",CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Intention to Purchase]="Total Intended"))
+    ),
+[HighestITP]
+)
+
+
+ VAR hightopofmindawarenessUser = CALCULATE(MAXX(FILTER(highestITPtbl, [HighestITP] = highestITPVal), 'product Data'[Brand]))
+
+ RETURN
+ "For "&SELECTEDVALUE('product Data'[Date].[Year]," the selected Year(s)")&", "
+        &SELECTEDVALUE('product Data'[Date].[Quarter]," selected Quarter(s)")&", "
+        &SELECTEDVALUE('product Data'[Actual_Age (groups)]," selected Age band(s)")&", "
+        &SELECTEDVALUE('product Data'[Sector]," selected Residential area(s)")&", "
+        &SELECTEDVALUE('product Data'[State]," and selected State(s)")&
+        ", the brand with the highest 'Total Intended' is " &hightopofmindawarenessUser & " with a value of "& highestITPVal
+
+-----------
+BrandCurrentUSage = 
+
+VAR highestCUtbl = 
+    SUMMARIZE('product Data','product Data'[Brand],
+    "HighestCU", CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Current Usage]="Yes"))
+    )
+
+VAR highestCUVal = MAXX(
+    SUMMARIZE('product Data','product Data'[Brand],
+    "HighestCU",CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Current Usage]="Yes"))
+    ),
+[HighestCU]
+)
+
+
+ VAR highCurrentUsage = CALCULATE(MAXX(FILTER(highestCUtbl, [HighestCU] = highestCUVal), 'product Data'[Brand]))
+
+ RETURN
+ "For "&SELECTEDVALUE('product Data'[Date].[Year]," the selected Year(s)")&", "
+        &SELECTEDVALUE('product Data'[Date].[Quarter]," selected Quarter(s)")&", "
+        &SELECTEDVALUE('product Data'[Actual_Age (groups)]," selected Age band(s)")&", "
+        &SELECTEDVALUE('product Data'[Sector]," selected Residential area(s)")&", "
+        &SELECTEDVALUE('product Data'[State]," and selected State(s)")&
+        ", the brand with the highest Current Usage is " &highCurrentUsage & " with a total value of "& highestCUVal
+------------------
+BrandLoyalty = 
+
+VAR highesbrandloyaltytbl = 
+    SUMMARIZE('product Data','product Data'[Brand],
+    "HighestBL", CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Loyalty by MOUB]="Extremely Likely"))
+    )
+
+VAR highestBLVal = MAXX(
+    SUMMARIZE('product Data','product Data'[Brand],
+    "HighestBL",CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Loyalty by MOUB]="Extremely Likely"))
+    ),
+[HighestBL]
+)
+
+
+ VAR highBL = CALCULATE(MAXX(FILTER(highesbrandloyaltytbl, [HighestBL] = highestBLVal), 'product Data'[Brand]))
+
+ RETURN
+ "For "&SELECTEDVALUE('product Data'[Date].[Year]," the selected Year(s)")&", "
+        &SELECTEDVALUE('product Data'[Date].[Quarter]," selected Quarter(s)")&", "
+        &SELECTEDVALUE('product Data'[Actual_Age (groups)]," selected Age band(s)")&", "
+        &SELECTEDVALUE('product Data'[Sector]," selected Residential area(s)")&", "
+        &SELECTEDVALUE('product Data'[State]," and selected State(s)")&
+        ", the brand with the highest Brand loyalty i.e. respondents picked 'Extremely likely' is " &highBL & " with a total value of "& highestBLVal
+-------------------
+BrandNB = 
+
+VAR highesNBtbl = 
+    SUMMARIZE('product Data','product Data'[Brand],
+    "HighestNB", CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Understanding noise levels]="Heard Good Things"))
+    )
+
+VAR highestNBVal = MAXX(
+    SUMMARIZE('product Data','product Data'[Brand],
+    "HighestNB",CALCULATE(COUNTROWS('product Data'),FILTER('product Data','product Data'[Understanding noise levels]="Heard Good Things"))
+    ),
+[HighestNB]
+)
+
+ VAR highNB = CALCULATE(MAXX(FILTER(highesNBtbl, [HighestNB] = highestNBVal), 'product Data'[Brand]))
+ RETURN
+ "For "&SELECTEDVALUE('product Data'[Date].[Year]," the selected Year(s)")&", "
+        &SELECTEDVALUE('product Data'[Date].[Quarter]," selected Quarter(s)")&", "
+        &SELECTEDVALUE('product Data'[Actual_Age (groups)]," selected Age band(s)")&", "
+        &SELECTEDVALUE('product Data'[Sector]," selected Residential area(s)")&", "
+        &SELECTEDVALUE('product Data'[State]," and selected State(s)")&
+        ", the brand with the highest positive net buzz loyalty i.e. majority of the respondents selected 'Heard Good Things' is " &highNB & " with a total value of "& highestNBVal
+-----------------
+Nosofproductss = 
+
+VAR highestNosofproductssTbl = 
+    SUMMARIZE('product Data','product Data'[Number of productss (groups)],
+    "HighestNosofproductss", CALCULATE(COUNTROWS('product Data'),'product Data'[Number of productss])
+    )
+
+VAR highestNosofproductssVal = MAXX(
+    SUMMARIZE('product Data','product Data'[Number of productss (groups)],
+    "HighestNosofproductss", CALCULATE(COUNTROWS('product Data'),'product Data'[Number of productss])
+    ),
+[HighestNosofproductss]
+)
+
+ VAR highNosofproductss = CALCULATE(MAXX(FILTER(highestNosofproductssTbl, [HighestNosofproductss] = highestNosofproductssVal), 'product Data'[Number of productss (groups)]))
+ RETURN
+ "For "&SELECTEDVALUE('product Data'[Actual_Age (groups)]," the selected Age band(s)")&", "
+        &SELECTEDVALUE('product Data'[Gender]," selected Gender(s)")&", "
+        &SELECTEDVALUE('product Data'[Sector]," selected Residential area(s)")&", "
+        &SELECTEDVALUE('product Data'[State]," and selected State(s)")&
+        ", majority of the respondents ("&FORMAT(highestNosofproductssVal,"#,##")&") have " &highNosofproductss& " products(s)."
+-----------------
+NosofproductssBrands = 
+
+VAR highestNosofproductssTbl = 
+    SUMMARIZE('product Data','product Data'[Number of productss (groups)],'product Data'[Brand],
+    "HighestNosofproductss", CALCULATE(COUNTROWS('product Data'),'product Data'[Number of productss])
+    )
+
+VAR highestNosofproductssVal = MAXX(
+    SUMMARIZE('product Data','product Data'[Number of productss (groups)],'product Data'[Brand],
+    "HighestNosofproductss", CALCULATE(COUNTROWS('product Data'),'product Data'[Number of productss])
+    ),
+[HighestNosofproductss]
+)
+ VAR highNosofproductss = CALCULATE(MAXX(FILTER(highestNosofproductssTbl, [HighestNosofproductss] = highestNosofproductssVal), 'product Data'[Number of productss (groups)]))
+  VAR highNosofBrands = CALCULATE(MAXX(FILTER(highestNosofproductssTbl, [HighestNosofproductss] = highestNosofproductssVal), 'product Data'[Brand]))
+
+ RETURN
+ "For "&SELECTEDVALUE('product Data'[Actual_Age (groups)]," the selected Age band(s)")&", "
+        &SELECTEDVALUE('product Data'[Gender]," selected Gender(s)")&", "
+        &SELECTEDVALUE('product Data'[Sector]," selected Residential area(s)")&", "
+        &SELECTEDVALUE('product Data'[State]," and selected State(s)")&
+        ", majority of the respondents ("&FORMAT(highestNosofproductssVal,"#,##")&") have " &highNosofproductss& " products(s) and use "&highNosofBrands
